@@ -68,7 +68,7 @@ pipeline {
         // ── Stage 2 : Compiler ───────────────────────
         stage('Build') {
             steps {
-                bat '"C:\\Windows\\System32\\cmd.exe" /c "%M2_HOME%\\bin\\mvn.cmd" clean compile -B'
+                bat 'mvn.cmd clean compile -B'
                 // -B = batch mode (pas de couleurs, logs Jenkins-friendly)
             }
         }
@@ -80,7 +80,7 @@ pipeline {
                 not { expression { return params.SKIP_TESTS } }
             }
             steps {
-                bat '"C:\\Windows\\System32\\cmd.exe" /c "%M2_HOME%\\bin\\mvn.cmd" test -B'
+                bat 'mvn.cmd test -B'
             }
             post {
                 always {
@@ -99,7 +99,7 @@ pipeline {
                 not { expression { return params.SKIP_TESTS } }
             }
             steps {
-                bat '"C:\\Windows\\System32\\cmd.exe" /c "%M2_HOME%\\bin\\mvn.cmd" verify -Dsurefire.skip=true -B'
+                bat 'mvn.cmd verify -Dsurefire.skip=true -B'
             }
             post {
                 always {
@@ -111,7 +111,7 @@ pipeline {
         // ── Stage 5 : Couverture de code ─────────────
         stage('Couverture JaCoCo') {
             steps {
-                bat '"C:\\Windows\\System32\\cmd.exe" /c "%M2_HOME%\\bin\\mvn.cmd" jacoco:report -B'
+                bat 'mvn.cmd jacoco:report -B'
             }
             post {
                 always {
@@ -128,7 +128,7 @@ pipeline {
         // ── Stage 6 : Analyse qualité ─────────────────
         stage('Qualité') {
             steps {
-                bat '"C:\\Windows\\System32\\cmd.exe" /c "%M2_HOME%\\bin\\mvn.cmd" checkstyle:checkstyle pmd:pmd pmd:cpd spotbugs:spotbugs -B'
+                bat 'mvn.cmd checkstyle:checkstyle pmd:pmd pmd:cpd spotbugs:spotbugs -B'
             }
             post {
                 always {
