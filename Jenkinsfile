@@ -202,34 +202,6 @@ pipeline {
             echo "Pipeline terminée — statut : ${currentBuild.currentResult}"
         }
 
-        // Seulement en cas d'échec
-        failure {
-            emailext(
-                subject: "❌ FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-Le build a échoué.
-
-Projet  : ${env.JOB_NAME}
-Build   : #${env.BUILD_NUMBER}
-Branche : ${env.GIT_BRANCH}
-URL     : ${env.BUILD_URL}
-
-Consulter les logs : ${env.BUILD_URL}console
-                """,
-                to:          'equipe-dev@monentreprise.fr',
-                attachLog:   true
-            )
-        }
-
-        // Seulement quand le build repasse de FAILURE à SUCCESS
-        fixed {
-            emailext(
-                subject: "✅ FIXED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body:    "Le build est de nouveau stable : ${env.BUILD_URL}",
-                to:      'haiderabderr@gmail.com'
-            )
-        }
-
     } // fin post
 
 } // fin pipeline
