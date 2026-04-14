@@ -68,7 +68,7 @@ pipeline {
         // ── Stage 2 : Compiler ───────────────────────
         stage('Build') {
             steps {
-                bat '%M2_HOME%\\bin\\mvn clean compile -B'
+                bat 'cmd /c mvn clean compile -B'
                 // -B = batch mode (pas de couleurs, logs Jenkins-friendly)
             }
         }
@@ -80,7 +80,7 @@ pipeline {
                 not { expression { return params.SKIP_TESTS } }
             }
             steps {
-                bat '%M2_HOME%\\bin\\mvn test -B'
+                bat 'cmd /c mvn test -B'
             }
             post {
                 always {
@@ -99,7 +99,7 @@ pipeline {
                 not { expression { return params.SKIP_TESTS } }
             }
             steps {
-                bat '%M2_HOME%\\bin\\mvn verify -Dsurefire.skip=true -B'
+                bat 'cmd /c mvn verify -Dsurefire.skip=true -B'
             }
             post {
                 always {
@@ -111,7 +111,7 @@ pipeline {
         // ── Stage 5 : Couverture de code ─────────────
         stage('Couverture JaCoCo') {
             steps {
-                bat '%M2_HOME%\\bin\\mvn jacoco:report -B'
+                bat 'cmd /c mvn jacoco:report -B'
             }
             post {
                 always {
@@ -128,7 +128,7 @@ pipeline {
         // ── Stage 6 : Analyse qualité ─────────────────
         stage('Qualité') {
             steps {
-                bat '%M2_HOME%\\bin\\mvn checkstyle:checkstyle pmd:pmd pmd:cpd spotbugs:spotbugs -B'
+                bat 'cmd /c mvn checkstyle:checkstyle pmd:pmd pmd:cpd spotbugs:spotbugs -B'
             }
             post {
                 always {
@@ -226,7 +226,7 @@ Consulter les logs : ${env.BUILD_URL}console
             emailext(
                 subject: "✅ FIXED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body:    "Le build est de nouveau stable : ${env.BUILD_URL}",
-                to:      'equipe-dev@monentreprise.fr'
+                to:      'haiderabderr@gmail.com'
             )
         }
 
